@@ -7,13 +7,13 @@ import StringIO
 from subprocess32 import Popen, PIPE
 
 '''
-Returns the output of 'docker ps' as a JSON
+Return the output of 'docker ps' as a json
 '''
 def get_status():
-    # command = "docker ps"
-    command = "sudo docker ps"		# Make sure to update so not using sudo
+    # command = "docker ps -a"
+    command = "sudo docker ps -a"		# Make sure to update so not using sudo
 
-    # Get output from command
+        # Get output from command
     p = Popen(command.split(), stdout=PIPE)
     out, err = p.communicate()
 
@@ -31,6 +31,37 @@ def get_status():
             container[counter][headings[i]] = l[i]
 
         counter += 1
+
+    return container
+
+'''
+Return the output of 'docker images' as a json
+'''
+def get_images():
+    # command = "docker images"
+    command = "sudo docker images"      # Make sure to update so not using sudo
+    
+    # Get output from command
+    p = Popen(command.split(), stdout=PIPE)
+    out, err = p.communicate()
+
+    separator_pattern = re.compile(r"\s\s+")
+
+    # parse output from command and make structure for json
+    s = StringIO.StringIO(out)
+    headings = separator_pattern.split(s.readline())
+    counter = 1
+    container = {}
+    for line in s.readlines():
+        container[counter] = {}
+        l = separator_pattern.split(line)
+
+        # Don't include empty/temporary images in return value
+        if "<none>" not in l[0]:
+            for i in range(len(l)):
+                container[counter][headings[i]] = l[i]
+
+            counter += 1
 
     return container
 
