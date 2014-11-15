@@ -29,9 +29,10 @@
 	            </div>
 	            <div class="collapse navbar-collapse navbar-ex1-collapse">
 	                <ul class="nav navbar-nav side-nav">
-	                    <li><a href="{% url 'home' %}"><i class="fa fa-bullseye"></i> Dashboard</a></li>
-	                    <li><a href="{% url 'manager.views.create_image' %}"><i class="fa fa-list-ol"></i> New Container</a></li>
-	                    <li><a href="{% url 'manager.views.display_instances' %}"><i class="fa fa-list-ol"></i> Running Containers</a></li>
+	                    <li id="nav-home"><a href="{% url 'home' %}"><i class="fa fa-bullseye"></i> Dashboard</a></li>
+	                    <li id="nav-create"><a href="{% url 'manager.views.create_image' %}"><i class="fa fa-list-ol"></i> New Container</a></li>
+	                    <li id="nav-status"><a href="{% url 'manager.views.display_instances' %}"><i class="fa fa-list-ol"></i> Running Containers</a></li>
+	                    <li id="nav-images"><a href="{% url 'manager.views.display_images' %}"><i class="fa fa-list-ol"></i> Manage Images</a></li>
 	                </ul>
 	                <ul class="nav navbar-nav navbar-right navbar-user">
 	                    <li class="dropdown messages-dropdown">
