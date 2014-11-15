@@ -101,6 +101,11 @@ def start_container(container_name, image_name, links, host_mounts, external_mou
         dest_path = host_mounts[host_path]
         binds_dict[host_path] = {'bind' : dest_path, 'ro' : False}
 
+    # Get DNS container IP address
+    dns_container_inspect_dict = client.inspect_container("dns")
+    dns_container_NetworkSettings_dict = dns_container_inspect_dict["NetworkSettings"]
+    dns_container_ip = [dns_container_NetworkSettings_dict["IPAddress"]]
+
     # Create a container and get its id
     container = client.create_container(image=image_name, name=container_name, 
         volumes=all_volumes, tty=is_interactive, stdin_open=is_interactive, 
@@ -108,6 +113,7 @@ def start_container(container_name, image_name, links, host_mounts, external_mou
     containerID = container.get('Id')
 
     # Start the container and return the response
-    response = client.start(container=container.get('Id'), publish_all_ports=True, 
-        volumes_from=external_mounts, links=links_dict, binds=binds_dict)
+    response = client.start(container=container.get('Id'), dns=dns_container_ip,
+        publish_all_ports=True, volumes_from=external_mounts, links=links_dict, 
+        binds=binds_dict)
     return response
