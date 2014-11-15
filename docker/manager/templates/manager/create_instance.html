@@ -1,17 +1,38 @@
 {% extends "manager/base.html" %}
+{% load widget_tweaks %}
+
 {% block title %}
 New Instance
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-lg-12">
-        <form action="{% url 'manager.views.create_image' %}" method="get">
-            {{ form.as_p }}
-            <input type="submit" value="Sumbit" />
+        <form action="{% url 'manager.views.create_image' %}" method="get" role="form">
+            {{ form.non_field_errors }}
+            <table class="form-group">
+                <tbody>
+                    <tr>
+                        <td><label for="id_name">Container Name: </label></td>
+                        <td>{{ form.name|add_class:"form-control" }}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="id_quantity">Number of Containers: </label></td>
+                        <td>{{ form.quantity|add_class:"form-control" }}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="id_image">Select Image: </label></td>
+                        <td>{{ form.image|add_class:"form-control" }}</td>
+                    </tr>
+                    <tr style="height:1em"></tr>
+                    <tr>
+                        <td><input type="submit" class="form-control" value="Launch Container" /></td>
+                    </tr>
+                </tbody>
+            </table>
         </form> 
     </div>
 </div>
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-6">
 
         <form role="form">
@@ -232,5 +253,5 @@ New Instance
 
         </form>
     </div>
-</div>
+</div> -->
 {% endblock %}
