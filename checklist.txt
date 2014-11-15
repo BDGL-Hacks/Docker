@@ -1,0 +1,28 @@
+CHECKLIST
+
+ Creation:
+  * Have a bunch of base Dockerfiles ready to be downloaded (see "Main Images to Implement")
+    - On the web app: the user selects options which selects which Dockerfile to download and what other options they want
+    - For the demo: have more options than we support  >:-)
+  * An option to name their images
+  * An option to provide which folder to mount to the image (as they change files in the local folder, the files in the image changes)
+  * An option to choose which port to expose
+  * Generate runtime flags based on which option they choose
+
+ Saving / Management:
+  * Ability to store running container to an image
+    - And be able to re-create an identical container from that image
+  * Have a page on the webapp that allows you to select previously saved/installed images
+  * An api that (when connected to "controller" computer) allows you to push, pull, etc. to the project repository
+    - Secretly implemented with git
+  * On the main database: save git username and passwords
+
+ Other Webapp Security:
+  * On webapp: Ability to expose / close port on main computer
+  * Generate ssh keys and require them to access the main computer
+
+ Main Images to Implement:
+  * Django
+  * Node
+  * MySql
+  * MongoDB
