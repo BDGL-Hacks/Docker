@@ -3,6 +3,10 @@ td {
 	text-align: center;
 }
 
+table {
+	width: 100%;
+}
+
 .highlight {
 	background-color: #080808
 }
