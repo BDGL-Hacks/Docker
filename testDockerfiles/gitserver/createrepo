@@ -1,14 +1,17 @@
 #!/bin/sh
 
-echo $1
-echo $1.git
+#echo $1
+#echo $1.git
 
 mkdir -p /git/repositories/$1.git
 mkdir -p /git/programs/$1
+chgrp -R git:developers /git
+
 cd /git/repositories/$1.git
 git init --bare --shared=group
 
 sed "s/NAME/$1/g" /git/post-update-template > /git/repositories/$1.git/hooks/post-update
+chgrp git:developers /git/repositories/$1.git
 
 cd /git/programs/$1/
 git init
@@ -16,5 +19,5 @@ touch README
 git add .
 git commit -am "Initial commit"
 git remote add origin git@localhost:/git/repositories/$1.git
-chgrp -R developers /git
+
 git push origin master
