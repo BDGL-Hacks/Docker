@@ -5,7 +5,8 @@ CHECKLIST
   - COMPLETE: Create docker container from image
   - Save running container to image
   - COMPLETE: Display information on all current running containers
-  - Display information on all saved images
+  - COMPLETE: Display information on all saved images
+  - Display information about container CPU and disk usage
 
  Central Docker TODO:
   - COMPLETE: Git integration

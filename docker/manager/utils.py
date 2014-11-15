@@ -2,18 +2,21 @@
 Contains scripts for manipulating docker data/commmands.
 '''
 import docker
+import json
 import re
 import StringIO
 from subprocess32 import Popen, PIPE
 
 '''
 Return the output of 'docker ps' as a json
+
+TODO: Update so command does not use sudo
 '''
 def get_status():
     # command = "docker ps -a"
-    command = "sudo docker ps -a"		# Make sure to update so not using sudo
+    command = "sudo docker ps -a"
 
-        # Get output from command
+    # Get output from command
     p = Popen(command.split(), stdout=PIPE)
     out, err = p.communicate()
 
@@ -35,11 +38,30 @@ def get_status():
     return container
 
 '''
+Return json containing container-specific docker information for given container id
+
+TODO: Update so command does not use sudo
+'''
+def get_info(container_id=""):
+    # command = "docker inspect " + container_id
+    command = "sudo docker inspect " + container_id 
+
+    # Get output from command
+    p = Popen(command.split(), stdout=PIPE)
+    out, err = p.communicate()
+
+    # Convert to json and return
+    s = StringIO.StringIO(out)
+    return json.load(s)
+
+'''
 Return the output of 'docker images' as a json
+
+TODO: Update so command does not use sudo
 '''
 def get_images():
     # command = "docker images"
-    command = "sudo docker images"      # Make sure to update so not using sudo
+    command = "sudo docker images"
     
     # Get output from command
     p = Popen(command.split(), stdout=PIPE)
