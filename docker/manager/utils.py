@@ -1,7 +1,6 @@
 '''
 Contains scripts for manipulating docker data/commmands.
 '''
-import json
 import re
 import StringIO
 from subprocess32 import Popen, PIPE
@@ -22,14 +21,14 @@ def get_status():
 	# parse output from command and make structure for json
 	s = StringIO.StringIO(out)
 	headings = separator_pattern.split(s.readline())
-	container = { headings[0]: {} }
+	counter = 1
+	container = {}
 	for line in s.readlines():
+		container[counter] = {}
 		l = separator_pattern.split(line)
-		container[headings[0]][l[0]] = {}
-		current = container[headings[0]][l[0]]
-		for i in range(1, len(l)):
-			current[headings[i]] = l[i]
+		for i in range(len(l)):
+			container[counter][headings[i]] = l[i]
 
-	json_base = [container]
+		counter += 1
 
-	return json.dumps(json_base)
+	return container
