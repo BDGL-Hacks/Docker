@@ -54,10 +54,10 @@ def start_container(container_name, image_name, links, host_mounts, external_mou
     custom_mounts, is_interactive, is_background):
     
     # Request a docker client
-    client = docker.Client(base_url='unix://var/run/docker.sock', verion='1.9', timeout=10)
+    client = docker.Client(base_url='unix://var/run/docker.sock', version='1.10', timeout=10)
 
     # Create a list of all volume paths to mount (not incuding those from other containers)
-    all_volumes = host_mounts + custom_mounts
+    all_volumes = host_mounts.values() + custom_mounts
 
     # Convert the links argument into a dictionary
     links_dict = {}
@@ -72,11 +72,11 @@ def start_container(container_name, image_name, links, host_mounts, external_mou
 
     # Create a container and get its id
     container = client.create_container(image=image_name, name=container_name, 
-        volumes=all_volumes, volumes_from=external_mounts, tty=is_interactive,
-        stdin_open=is_interactive, detach=is_background)
+        volumes=all_volumes, tty=is_interactive, stdin_open=is_interactive, 
+        detach=is_background)
     containerID = container.get('Id')
 
     # Start the container and return the response
     response = client.start(container=container.get('Id'), publish_all_ports=True, 
-        links=links_dict, binds=binds_dict)
+        volumes_from=external_mounts, links=links_dict, binds=binds_dict)
     return response
