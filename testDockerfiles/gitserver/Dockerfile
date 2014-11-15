@@ -7,14 +7,16 @@ apt-get install -y git openssh-server &&\
 groupadd developers && \
 
 useradd -G developers git && \
-chpasswd git lol && \
+echo git:lol | chpasswd && \
 
-mkdir -p repositories/practice.git &&\
-chgrp -R developers repositories &&\  
-cd repositories/practice.git &&\
-git init --bare --shared=group 
+mkdir -p /git/repositories/practice.git &&\
+mkdir -p /git/programs/ &&\ 
+cd /git/repositories/practice.git &&\
+git init --bare --shared=group &&\
+chgrp -R developers /git && /
+service ssh start
 
-
-
+ADD createrepo /git/
+ADD post-update-template /git/
 
 

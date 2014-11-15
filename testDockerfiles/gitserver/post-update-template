@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd /git/programs/NAME
+git pull origin master
+
