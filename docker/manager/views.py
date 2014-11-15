@@ -1,3 +1,5 @@
+import json
+import utils
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from forms import CreateInstForm
@@ -20,5 +22,8 @@ def create_image(request):
 
 # Display existing instances
 def display_instances(request):
-	# Run script to get existing instances and their stats
-	return render(request, 'manager/monitor_instances.html')
+	# Get existing containers
+	status = utils.get_status()
+	keys = status[status.keys()[0]].keys()
+	
+	return render(request, 'manager/monitor_instances.html', { 'keys': keys, 'containers': status })
