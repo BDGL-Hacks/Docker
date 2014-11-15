@@ -1,0 +1,4 @@
+FROM nginx
+COPY websites /usr/share/nginx/html
+
+
