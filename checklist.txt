@@ -1,11 +1,24 @@
 CHECKLIST
 
+ Webapp API TODO:
+  - Create custom docker image
+  - COMPLETE: Create docker container from image
+  - Save running container to image
+  - COMPLETE: Display information on all current running containers
+  - Display information on all saved images
+
+ Central Docker TODO:
+  - COMPLETE: Git integration
+  - COMPLETE: Generate and require ssh keys
+  - Get DNS Server stuff working 
+
+
  Creation:
   * Have a bunch of base Dockerfiles ready to be downloaded (see "Main Images to Implement")
     - On the web app: the user selects options which selects which Dockerfile to download and what other options they want
     - For the demo: have more options than we support  >:-)
   * An option to name their images
-  * An option to provide which folder to mount to the image (as they change files in the local folder, the files in the image changes)
+  * An option to provide which folder(s) to mount to the image (as they change files in the local folder, the files in the image changes)
   * An option to choose which port to expose
   * Generate runtime flags based on which option they choose
 
