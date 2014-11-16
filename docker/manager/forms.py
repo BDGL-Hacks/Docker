@@ -1,3 +1,4 @@
+import utils
 from django import forms
 
 ''' Manages the creation of a container from a previously saved image '''
@@ -6,10 +7,10 @@ class CreateInstForm(forms.Form):
 	''' TODO: These should choose between a list of images you have saved '''
 	# Images the user has previously saved
 	image_choices = (
-		(1, 'Ubuntu'),
-		(2, 'NodeJS'),
-		(3, 'MySQL'),
-		(4, 'MongoDB'),
+		('Ubuntu', 'Ubuntu'),
+		('NodeJS', 'NodeJS'),
+		('MySQL', 'MYSQL'),
+		('MongoDB', 'MongoDB'),
 	)
 
 	''' TODO: Actually populate these with running docker containers '''
@@ -42,4 +43,4 @@ class CreateInstForm(forms.Form):
 
 class CreateContainerForm(forms.Form):
 	container_name = forms.CharField(label="Container Name", max_length=50)
-	image_id = forms.CharField(label="Image Id", max_length=50)
+	image_id = forms.ChoiceField(choices=utils.image_id_choices())

@@ -109,6 +109,17 @@ def convert_time(sTime=""):
 
 
 '''
+Return tuple of all possible image choices for creating new containers.
+'''
+def image_id_choices():
+    image_choices = []
+    images = get_images()
+    for i in images:
+        image_choices.append((images[i]['IMAGE ID'], images[i]['TAG']))
+
+    return tuple(image_choices)
+
+'''
 Starts a docker container(s) with the provided image and options.
 
 Parameters: 
