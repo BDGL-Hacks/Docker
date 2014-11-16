@@ -3,7 +3,7 @@ import utils
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from forms import CreateInstForm, CreateContainerForm
+from forms import CreateImageForm, CreateContainerForm
 
 '''
 Homepage
@@ -18,7 +18,7 @@ def create_container(request):
 
 	# If we're receiving form data, validate and process it
 	if request.method == 'GET':
-		form = CreateInstForm(request.GET)
+		form = CreateImageForm(request.GET)
 		if form.is_valid():
 
 			# Create and start the new container
@@ -30,7 +30,7 @@ def create_container(request):
 
 	# Else create a blank form (this hshould never happen)
 	else:
-		form = CreateInstForm()
+		form = CreateImageForm()
 
 	# Render the create_instance html template and send it to the form
 	return render(request, 'manager/create_container.html', { 'form': form })
@@ -42,12 +42,12 @@ def create_image(request):
 	if request.method == 'GET':
 		form = CreateContainerForm(request.GET)
 		if form.is_valid():
-			# Call script to create new container from image
+			# Call script to create new image
 			return HttpResponseRedirect('/manager/containers/')
 	else:
 		form = CreateContainerForm()
 
-	return render(request, 'manager/create_instance.html', { 'form': form })
+	return render(request, 'manager/create_image.html', { 'form': form })
 
 '''
 Display existing instances

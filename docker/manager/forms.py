@@ -21,6 +21,10 @@ class CreateInstForm(forms.Form):
 	is_interactive = forms.BooleanField(required=False)
 	is_background = forms.BooleanField(required=False)
 
+class CreateImageForm(forms.Form):
+	image_tag = forms.CharField(label="Image Name", max_length=50)
+	image_base = forms.ChoiceField(choices=utils.image_base_choices())
+
 class CreateContainerForm(forms.Form):
 	container_name = forms.CharField(label="Container Name", max_length=50)
 	image_id = forms.ChoiceField(choices=utils.image_id_choices())

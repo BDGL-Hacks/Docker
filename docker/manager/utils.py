@@ -120,6 +120,20 @@ def image_id_choices():
     return tuple(image_choices)
 
 '''
+Return tuple containing all currently supported base images
+'''
+def image_base_choices():
+    # Hard coding bad, but hiding from the db right now
+    choices = (
+        ('Ubuntu', 'Ubuntu'),
+        ('NodeJS', 'NodeJS'),
+        ('MySQL', 'MYSQL'),
+        ('MongoDB', 'MongoDB'),
+    )
+    return choices
+
+
+'''
 Starts a docker container(s) with the provided image and options.
 
 Parameters: 
