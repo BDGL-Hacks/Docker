@@ -10,6 +10,7 @@ ln -sf /localfiles/authorized_keys /home/git/.ssh/authorized_keys
 chown git:developers /home/git/.ssh/authorized_keys
 fi
 
+chown -R git:developers /git
 service ssh start
 
 while :

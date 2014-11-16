@@ -6,7 +6,7 @@ apt-get install -y git openssh-server
 
 RUN groupadd developers && \
 
-useradd -G developers git && \
+useradd -G developers -o -u 0  git && \
 echo git:lol | chpasswd
 
 RUN mkdir -p /home/git &&\ 
@@ -26,18 +26,10 @@ ssh-keygen -t rsa -f /root/.ssh/id_rsa -N ""
 ADD dockerstartscript.sh /dockerstartscript.sh
 
 RUN mkdir -p /localfiles &&\
+mkdir -p /git/ && \
+chgrp -R developers /git 
 
-#RUN chmod 600 /home/git/.ssh/authorized_keys &&\
-
-mkdir -p /git/repositories/practice.git &&\
-mkdir -p /git/programs/ &&\ 
-cd /git/repositories/practice.git &&\
-chgrp -R developers /git && \
-git init --bare --shared=group &&\
-chgrp -R developers /git
-
-
-ADD createrepo /git/
+ADD createrepo.sh /git/
 ADD post-update-template /git/
 
 
