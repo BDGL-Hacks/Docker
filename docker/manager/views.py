@@ -2,7 +2,7 @@ import json
 import utils
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from forms import CreateInstForm
+from forms import CreateInstForm, CreateContainerForm
 
 '''
 Homepage
@@ -25,6 +25,20 @@ def create_image(request):
 		form = CreateInstForm()
 
 	return render(request, 'manager/create_instance.html', { 'form': form })
+
+'''
+Create new container from image
+'''
+def create_container(request):
+	if request.method == 'GET':
+		form = CreateContainerForm(request.GET)
+		if form.is_valid():
+			# Call script to create new container from image
+			return HttpResponseRedirect('/manage/containers/')
+	else:
+		form = CreateContainerForm()
+
+	return render(request, 'manager/create_container.html', { 'form': form })
 
 '''
 Display existing instances
@@ -89,7 +103,8 @@ Show detailed image information
 '''
 def image_details(request):
 	if request.method == 'GET':
-		if 'id' in request.GET:
-			return render(request, 'manager/image_details.html', { 'id': request.GET['id'] })
+		if 'tag' in request.GET and 'id' in request.GET:
+			form = CreateContainerForm()
+			return render(request, 'manager/image_details.html', { 'tag': request.GET['tag'], 'id': request.GET['id'], 'form':form })
 
 	return HttpResponseRedirect('/manager/images/')

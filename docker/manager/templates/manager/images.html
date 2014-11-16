@@ -22,7 +22,7 @@ Images
 	</thead>
 	<tbody>
 		{% for image, info in images.items %}
-			<tr class="clickable-row" href="{% url 'manager.views.image_details' %}?id={{ images|get_item:image|get_item:'IMAGE ID' }}">
+			<tr class="clickable-row" href="{% url 'manager.views.image_details' %}?tag={{ images|get_item:image|get_item:'TAG' }}&id={{ images|get_item:image|get_item:'IMAGE ID' }}">
 				<td>{{ image }}</td>
 				{% for key, value in info.items %}
 					<td>{{ value }}</td>

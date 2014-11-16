@@ -11,3 +11,7 @@ class CreateInstForm(forms.Form):
 	name = forms.CharField(label="Container Name", max_length=100)
 	quantity = forms.IntegerField()
 	image = forms.ChoiceField(choices=image_choices)
+
+class CreateContainerForm(forms.Form):
+	container_name = forms.CharField(label="Container Name", max_length=50)
+	image_id = forms.CharField(label="Image Id", max_length=50)

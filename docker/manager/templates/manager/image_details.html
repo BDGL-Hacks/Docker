@@ -1,22 +1,41 @@
 {% extends "manager/base.html" %}
+{% load widget_tweaks %}
 
 {% block title %}
 Image Details
 {% endblock %}
 {% block page_title %}
-Image Details
+Image: {{ tag }} ({{ id }})
 {% endblock %}
 {% block content %}
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">Image: {{ id }}</h3>
-	</div>
-	<div class="panel-body">
-		<div class="col-lg-8">
-			<button type="button" class="btn btn-success">Launch Container From Image</button>
+<div class="col-lg-8">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Launch Container from Image</h3>
 		</div>
-		<div class="col-lg-4">
-			<button type="button" class="btn btn-danger" style="float:right;">Delete Image</button>
+		<div class="panel-body">
+			<form action="{% url 'manager.views.create_container' %}" method="get" role="form">
+				{{ form.non_field_errors }}
+				<div class="row" style="text-align:center;">
+					<div class="col-lg-8">
+						{% render_field form.container_name class+="form-control btn-lg" placeholder="Container Name" %}
+						{% render_field form.image_id style="display:none;" class+="hidden-field"%}
+					</div>
+					<div class="col-lg-4">
+						<button type="submit" class="btn btn-success" style="width:100%;">Launch Container</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="col-lg-4">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Remove</h3>
+		</div>
+		<div class="panel-body" style="text-align:center;">
+			<button type="button" class="btn btn-danger" style="width:75%">Delete Image</button>
 		</div>
 	</div>
 </div>
@@ -25,6 +44,12 @@ Image Details
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#nav-images").addClass("selected");
+	$(".hidden-field").val("{{ id }}")
 });
+
+/***************************************
+ ***** ADD SCRIPT TO VALIDATE FORM *****
+ ***************************************/
+
 </script>
 {% endblock %}
