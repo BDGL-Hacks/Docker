@@ -1,0 +1,4 @@
+Docker in Docker was adapted from: https://github.com/jpetazzo/dind
+
+VPN was heavily adapted from: https://github.com/pjan/docker-openvpn
+
