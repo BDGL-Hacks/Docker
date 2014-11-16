@@ -1,1 +1,7 @@
-while true; do sleep 2; done
+#!/bin/sh
+service tinyproxy start
+
+while :
+do
+  sleep 1
+done
