@@ -39,3 +39,7 @@ class CreateInstForm(forms.Form):
 	custom_mounts = forms.CharField(label="Create and Mount a new directory - Dir Path:", max_length=100)
 	is_interactive = forms.BooleanField(required=False)
 	is_background = forms.BooleanField(required=False)
+
+class CreateContainerForm(forms.Form):
+	container_name = forms.CharField(label="Container Name", max_length=50)
+	image_id = forms.CharField(label="Image Id", max_length=50)
