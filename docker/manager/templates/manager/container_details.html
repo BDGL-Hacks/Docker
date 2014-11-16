@@ -120,11 +120,5 @@ $(document).ready(function() {
 	$("#nav-status").addClass("selected");
 });
 
-$("#startContainerButton").click( function() {
-    $.post("manager.contollers.start_container", {"name", {{ details|get_item:"name" }} }, function () {
-        	alert("Yo. This actually worked");
-    });
-});
-
 </script>
 {% endblock %}
