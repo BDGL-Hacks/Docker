@@ -1,8 +1,9 @@
 import json
 import utils
-from django.shortcuts import render
+from django.template import RequestContext
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from forms import CreateInstForm
+from forms import CreateImageForm, CreateContainerForm
 
 '''
 Homepage
@@ -11,58 +12,47 @@ def home(request):
 	return render(request, 'manager/main_panel.html')
 
 '''
-Launch new instances
-
-TODO: Actually make the new container
+Launch new container(s) from stored image
 '''
 def create_container(request):
+
+	# If we're receiving form data, validate and process it
 	if request.method == 'GET':
-		form = CreateInstForm(request.GET)
+		form = CreateImageForm(request.GET)
 		if form.is_valid():
- 
- 			''' 
- 				TODO: This is horrible code, and not even how its going to be processed
- 				when dynamic forms are introduced. When it is redone, feel free to uproot
- 				this entirely... sorry
- 			'''
-			# Get and process the data from the form into the required format
-			data = form.cleaned_data
-			container_name = data["container_name"]
-			image_name = data["image_name"]
-			quantity = data["quantity"]
-			links = [data["links"]]
-			if (data["4links"] == ""):
-				links = []
-			host_mounts = {}
-			host_mounts[data["host_mount_local_path"]] = data["host_mount_dest_path"]
-			if (data["host_mount_local_path"] == ""):
-				host_mounts = {}
-			external_mounts = [data["external_mounts"]]
-			if (data["external_mounts"] == ""): 
-				external_mounts = []
-			custom_mounts = [data["custom_mounts"]]
-			if (data["custom_mounts"] == ""): 
-				custom_mounts = []
-			is_interactive = data["is_interactive"]
-			is_background = data["is_background"]
 
 			# Create and start the new container
-			utils.start_container(container_name, image_name, quantity, links,
-				host_mounts, external_mounts, custom_mounts, is_interactive,
-				is_background)
+			utils.start_container(form.cleaned_data["container_name"],
+				form.cleaned_data["image_name"])
 
-			# Create new containers with given parameters
+			# Redirect back to the home page
 			return HttpResponseRedirect('/')
-	else:
-		form = CreateInstForm()
 
-	return render(request, 'manager/create_instance.html', { 'form': form })
+	# Else create a blank form (this hshould never happen)
+	else:
+		form = CreateImageForm()
+
+	# Render the create_instance html template and send it to the form
+	return render(request, 'manager/create_container.html', { 'form': form })
+
+'''
+Create new image from template
+'''
+def create_image(request):
+	if request.method == 'GET':
+		form = CreateContainerForm(request.GET)
+		if form.is_valid():
+			# Call script to create new image
+			return HttpResponseRedirect('/manager/containers/')
+	else:
+		form = CreateContainerForm()
+
+	return render(request, 'manager/create_image.html', { 'form': form })
 
 '''
 Display existing instances
 
 TODO: Add filters
-	  Add ability to select container and view detailed information (CPU, disk, ip, make new image, etc. (docker inspect))
 	  Fix table so that the port/name is fixed
 '''
 def display_instances(request):
@@ -82,31 +72,45 @@ Show detailed container information
 '''
 def container_details(request):
 	if request.method == 'GET':
-		if "id" in request.GET:
+		if 'id' in request.GET:
+			if 'save' in request.GET:
+				# Call function to convert existing container to image
+				utils.branch_container(request.GET.get('id'), request.GET.get('id')+"branch")
+				return HttpResponseRedirect('/manager/images/')
+			elif 'start' in request.GET:
+				# Call function to start a stopped or paused container
+				utils.resume_container(request.GET.get('id'))
+				pass
+			elif 'pause' in request.GET:
+				# Call function to pause a started container
+				utils.stop_container(request.GET.get('id'))
+				pass
+			elif 'stop' in request.GET:
+				# Call function to stop a started or paused container
+				utils.remove_container(request.GET.get('id'))
+				pass
+
 			# Get detailed information for container
 			info = utils.get_info(request.GET['id'])[0]
 
 			# Most useful information
 			container_details = {}
-			container_details["cpu_shares"] = info["Config"]["CpuShares"]
-			container_details["memory"] = info["Config"]["Memory"]
-			container_details["memory_swap"] = info["Config"]["MemorySwap"]
-			container_details["created_time"] = utils.convert_time(info["Created"])
-			container_details["id"] = info["Id"][:12]  		# Use first 12 digits
-			container_details["image"] = info["Image"][:12] # Use first 12 digits
-			container_details["name"] = info["Name"][1:]	# First char is always a '/'
-			container_details["ip"] = info["NetworkSettings"]["IPAddress"]
-			container_details["is_running"] = info["State"]["Running"]
-			container_details["start_time"] = utils.convert_time(info["State"]["StartedAt"])
-			container_details["is_paused"] = info["State"]["Paused"]
-			container_details["finish_time"] = utils.convert_time(info["State"]["FinishedAt"])
+			container_details['cpu_shares'] = info['Config']['CpuShares']
+			container_details['memory'] = info['Config']['Memory']
+			container_details['memory_swap'] = info['Config']['MemorySwap']
+			container_details['created_time'] = utils.convert_time(info['Created'])
+			container_details['id'] = info['Id'][:12]  		# Use first 12 digits
+			container_details['image'] = info['Image'][:12] # Use first 12 digits
+			container_details['name'] = info['Name'][1:]	# First char is always a '/'
+			container_details['ip'] = info['NetworkSettings']['IPAddress']
+			container_details['is_running'] = info['State']['Running']
+			container_details['start_time'] = utils.convert_time(info['State']['StartedAt'])
+			container_details['is_paused'] = info['State']['Paused']
+			container_details['finish_time'] = utils.convert_time(info['State']['FinishedAt'])
 
-			return render(request, 'manager/details.html', { 'details': container_details })
+			return render_to_response('manager/container_details.html', { 'details': container_details, 'id': request.GET['id'] })
 
-	return HttpResponseRedirect('/manager/status/')
-
-
-
+	return HttpResponseRedirect('/manager/containers/')
 
 '''
 Display existing images
@@ -119,3 +123,25 @@ def display_images(request):
 	keys = images[images.keys()[0]].keys()
 
 	return render(request, 'manager/images.html', { 'keys': keys, 'images': images })
+
+'''
+Show detailed image information
+'''
+def image_details(request):
+	if request.method == 'GET':
+		if 'tag' in request.GET and 'id' in request.GET:
+			form = CreateContainerForm()
+			return render(request, 'manager/image_details.html', { 'tag': request.GET['tag'], 'id': request.GET['id'], 'form':form })
+
+	return HttpResponseRedirect('/manager/images/')
+
+'''
+Delete image in the get request
+'''
+def delete_image(request):
+	if request.method == 'GET':
+		if 'id' in request.GET:
+			# Call function to delete this image id
+			pass
+
+	return HttpResponseRedirect('/manager/images/')

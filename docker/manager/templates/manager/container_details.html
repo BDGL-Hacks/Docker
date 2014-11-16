@@ -2,15 +2,25 @@
 {% load manager_extras %}
 
 {% block title %}
-Details
+Container Details
 {% endblock %}
 {% block page_title %}
-Details: {{ details|get_item:"name" }}
+Container Details
+{% endblock %}
+{% block head %}
+<style>
+.btn {
+	width: 75%;
+}
+.col-lg-3 {
+	text-align: center;
+}
+</style>
 {% endblock %}
 {% block content %}
 <div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">Details</h3>
+		<h3 class="panel-title">Container: {{ details|get_item:"name" }}</h3>
 	</div>
 	<div class="panel-body">
 		<div class="row">
@@ -82,4 +92,33 @@ Details: {{ details|get_item:"name" }}
 		</div>
 	</div>
 </div>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Manage Container</h3>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-lg-3">
+				<a class="btn btn-info btn-lg" href="?id={{ id }}&save=">Save Image</a>
+			</div>
+			<div class="col-lg-3">
+				<a class="btn btn-success btn-lg" href="?id={{ id }}&start=">Start Container</a>
+			</div>
+			<div class="col-lg-3">
+				<a class="btn btn-warning btn-lg" href="?id={{ id }}&pause=">Pause Container</a>
+			</div>
+			<div class="col-lg-3">
+				<a class="btn btn-danger btn-lg" href="?id={{ id }}&stop=">Stop Container</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block footer %}
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#nav-status").addClass("selected");
+});
+
+</script>
 {% endblock %}
