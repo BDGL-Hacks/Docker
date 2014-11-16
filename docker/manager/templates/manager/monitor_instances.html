@@ -1,4 +1,6 @@
 {% extends "manager/table_base.html" %}
+{% load manager_extras %}
+
 {% block title %}
 Status
 {% endblock %}
@@ -20,7 +22,7 @@ Containers
 	</thead>
 	<tbody>
 		{% for container, info in containers.items %}
-			<tr>
+			<tr class="clickable-row" href="{% url 'manager.views.container_details' %}?id={{ containers|get_item:container|get_item:'CONTAINER ID' }}">
 				<td>{{ container }}</td>
 				{% for key, value in info.items %}
 					<td>{{ value }}</td>	
@@ -34,6 +36,9 @@ Containers
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#nav-status").addClass("selected");
+	$(".clickable-row").click(function() {
+		window.document.location = $(this).attr("href");
+	});
 });
 </script>
 {% endblock %}

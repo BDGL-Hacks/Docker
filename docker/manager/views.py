@@ -69,8 +69,44 @@ def display_instances(request):
 	# Get existing containers
 	status = utils.get_status()
 	keys = status[status.keys()[0]].keys()
-	
-	return render(request, 'manager/monitor_instances.html', { 'keys': keys, 'containers': status })
+
+	# Set variables for template
+	context = {}
+	context['keys'] = keys
+	context['containers'] = status
+
+	return render(request, 'manager/monitor_instances.html', context)
+
+'''
+Show detailed container information
+'''
+def container_details(request):
+	if request.method == 'GET':
+		if "id" in request.GET:
+			# Get detailed information for container
+			info = utils.get_info(request.GET['id'])[0]
+
+			# Most useful information
+			container_details = {}
+			container_details["cpu_shares"] = info["Config"]["CpuShares"]
+			container_details["memory"] = info["Config"]["Memory"]
+			container_details["memory_swap"] = info["Config"]["MemorySwap"]
+			container_details["created_time"] = utils.convert_time(info["Created"])
+			container_details["id"] = info["Id"][:12]  		# Use first 12 digits
+			container_details["image"] = info["Image"][:12] # Use first 12 digits
+			container_details["name"] = info["Name"][1:]	# First char is always a '/'
+			container_details["ip"] = info["NetworkSettings"]["IPAddress"]
+			container_details["is_running"] = info["State"]["Running"]
+			container_details["start_time"] = utils.convert_time(info["State"]["StartedAt"])
+			container_details["is_paused"] = info["State"]["Paused"]
+			container_details["finish_time"] = utils.convert_time(info["State"]["FinishedAt"])
+
+			return render(request, 'manager/details.html', { 'details': container_details })
+
+	return HttpResponseRedirect('/manager/status/')
+
+
+
 
 '''
 Display existing images
