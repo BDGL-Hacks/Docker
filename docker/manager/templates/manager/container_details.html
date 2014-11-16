@@ -9,7 +9,7 @@ Container Details
 {% endblock %}
 {% block head %}
 <style>
-button {
+.btn {
 	width: 75%;
 }
 .col-lg-3 {
@@ -99,16 +99,16 @@ button {
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-lg-3">
-				<button type="button" class="btn btn-info btn-lg">Save Image</button>
+				<a class="btn btn-info btn-lg" href="?id={{ id }}&save=">Save Image</a>
 			</div>
 			<div class="col-lg-3">
-				<button type="button" class="btn btn-success btn-lg">Start Container</button>
+				<a class="btn btn-success btn-lg" href="?id={{ id }}&start=">Start Container</a>
 			</div>
 			<div class="col-lg-3">
-				<button type="button" class="btn btn-warning btn-lg">Pause Container</button>
+				<a class="btn btn-warning btn-lg" href="?id={{ id }}&pause=">Pause Container</a>
 			</div>
 			<div class="col-lg-3">
-				<button type="button" class="btn btn-danger btn-lg">Stop Container</button>
+				<a class="btn btn-danger btn-lg" href="?id={{ id }}&stop=">Stop Container</a>
 			</div>
 		</div>
 	</div>

@@ -1,6 +1,7 @@
 import json
 import utils
-from django.shortcuts import render
+from django.template import RequestContext
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from forms import CreateInstForm, CreateContainerForm
 
@@ -95,6 +96,19 @@ Show detailed container information
 def container_details(request):
 	if request.method == 'GET':
 		if 'id' in request.GET:
+			if 'save' in request.GET:
+				# Call function to convert existing container to image
+				return HttpResponseRedirect('/manager/images/')
+			elif 'start' in request.GET:
+				# Call function to start a stopped or paused container
+				pass
+			elif 'pause' in request.GET:
+				# Call function to pause a started container
+				pass
+			elif 'stop' in request.GET:
+				# Call function to stop a started or paused container
+				pass
+
 			# Get detailed information for container
 			info = utils.get_info(request.GET['id'])[0]
 
@@ -113,7 +127,7 @@ def container_details(request):
 			container_details['is_paused'] = info['State']['Paused']
 			container_details['finish_time'] = utils.convert_time(info['State']['FinishedAt'])
 
-			return render(request, 'manager/container_details.html', { 'details': container_details })
+			return render_to_response('manager/container_details.html', { 'details': container_details, 'id': request.GET['id'] })
 
 	return HttpResponseRedirect('/manager/containers/')
 
