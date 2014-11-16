@@ -42,6 +42,7 @@ Image: {{ tag }} ({{ id }})
 {% endblock %}
 {% block footer %}
 <script type="text/javascript">
+
 $(document).ready(function() {
 	$("#nav-images").addClass("selected");
 	$(".hidden-field").val("{{ id }}")

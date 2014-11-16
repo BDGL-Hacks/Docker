@@ -109,6 +109,17 @@ def convert_time(sTime=""):
 
 
 '''
+Return tuple of all possible image choices for creating new containers.
+'''
+def image_id_choices():
+    image_choices = []
+    images = get_images()
+    for i in images:
+        image_choices.append((images[i]['IMAGE ID'], images[i]['REPOSITORY']))
+
+    return tuple(image_choices)
+
+'''
 Starts a docker container(s) with the provided image and options.
 
 Parameters: 
@@ -125,8 +136,8 @@ custom_mounts   =   (string list) A list of paths for volumes to create and moun
 
 Returns the response from the last initatied container
 '''
-def start_container(container_name, image_name, quantity, is_interactive, is_background, 
-    links=[], host_mounts={}, external_mounts=[], custom_mounts=[]):
+def start_container(container_name, image_name, quantity=1, is_interactive=True, 
+    is_background=True, links=[], host_mounts={}, external_mounts=[], custom_mounts=[]):
     
     # Request a docker client
     client = docker.Client(base_url='unix://var/run/docker.sock', version='1.10', timeout=10)

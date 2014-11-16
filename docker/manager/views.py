@@ -20,17 +20,9 @@ def create_container(request):
 		form = CreateInstForm(request.GET)
 		if form.is_valid():
 
-			# Get and process the data from the form into the required format
-			data = form.cleaned_data
-			container_name = data["container_name"]
-			image_name = data["image_name"]
-			quantity = data["quantity"]
-			is_interactive = data["is_interactive"]
-			is_background = data["is_background"]
-
 			# Create and start the new container
-			utils.start_container(container_name, image_name, quantity, is_interactive,
-				is_background)
+			utils.start_container(form.cleaned_data["container_name"],
+				form.cleaned_data["image_name"])
 
 			# Redirect back to the home page
 			return HttpResponseRedirect('/')

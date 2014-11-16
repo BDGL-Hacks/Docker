@@ -102,7 +102,7 @@ button {
 				<button type="button" class="btn btn-info btn-lg">Save Image</button>
 			</div>
 			<div class="col-lg-3">
-				<button type="button" class="btn btn-success btn-lg">Start Container</button>
+				<button id="startContainerButton" type="button" class="btn btn-success btn-lg">Start Container</button>
 			</div>
 			<div class="col-lg-3">
 				<button type="button" class="btn btn-warning btn-lg">Pause Container</button>
@@ -119,5 +119,12 @@ button {
 $(document).ready(function() {
 	$("#nav-status").addClass("selected");
 });
+
+$("#startContainerButton").click( function() {
+    $.post("manager.contollers.start_container", {"name", {{ details|get_item:"name" }} }, function () {
+        	alert("Yo. This actually worked");
+    });
+});
+
 </script>
 {% endblock %}

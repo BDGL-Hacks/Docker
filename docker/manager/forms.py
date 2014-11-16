@@ -1,3 +1,4 @@
+import utils
 from django import forms
 import utils
 
@@ -22,4 +23,4 @@ class CreateInstForm(forms.Form):
 
 class CreateContainerForm(forms.Form):
 	container_name = forms.CharField(label="Container Name", max_length=50)
-	image_id = forms.CharField(label="Image Id", max_length=50)
+	image_id = forms.ChoiceField(choices=utils.image_id_choices())
