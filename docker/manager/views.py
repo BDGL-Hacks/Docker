@@ -12,10 +12,9 @@ def home(request):
 	return render(request, 'manager/main_panel.html')
 
 '''
-Launch new container(s) from stored image
+Launch new image
 '''
-def create_container(request):
-
+def create_image(request):
 	# If we're receiving form data, validate and process it
 	if request.method == 'GET':
 		form = CreateImageForm(request.GET)
@@ -33,12 +32,12 @@ def create_container(request):
 		form = CreateImageForm()
 
 	# Render the create_instance html template and send it to the form
-	return render(request, 'manager/create_container.html', { 'form': form })
+	return render(request, 'manager/create_image.html', { 'form': form })
 
 '''
-Create new image from template
+Create new container from template
 '''
-def create_image(request):
+def create_container(request):
 	if request.method == 'GET':
 		form = CreateContainerForm(request.GET)
 		if form.is_valid():
@@ -47,7 +46,7 @@ def create_image(request):
 	else:
 		form = CreateContainerForm()
 
-	return render(request, 'manager/create_image.html', { 'form': form })
+	return render(request, 'manager/create_container.html', { 'form': form })
 
 '''
 Display existing instances
