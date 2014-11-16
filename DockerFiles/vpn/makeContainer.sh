@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker run -d --name runningproxy \
+docker run -it --name runningproxy \
              --privileged \
                         -v $PWD/data:/data \
                         -v $PWD/bin/openvpn-run:/bin/openvpn-run   \

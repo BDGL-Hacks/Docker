@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
 
+IP=172.17.0.2   #$(cat $PWD/../../dns/dns_ip)
 OPENVPN_DATA_DIR="/data"
-
+echo "$IP"
 init() {
   [ -d /dev/net ] ||
     mkdir -p /dev/net
@@ -46,8 +47,7 @@ persist-key
 persist-tun
 comp-lzo
 push "redirect-gateway def1"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS $IP"
 
 proto udp
 port 1194
