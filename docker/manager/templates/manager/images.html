@@ -1,4 +1,5 @@
 {% extends "manager/table_base.html" %}
+{% load manager_extras %}
 
 {% block title %}
 Images
@@ -21,7 +22,7 @@ Images
 	</thead>
 	<tbody>
 		{% for image, info in images.items %}
-			<tr>
+			<tr class="clickable-row" href="{% url 'manager.views.image_details' %}?tag={{ images|get_item:image|get_item:'TAG' }}&id={{ images|get_item:image|get_item:'IMAGE ID' }}">
 				<td>{{ image }}</td>
 				{% for key, value in info.items %}
 					<td>{{ value }}</td>
@@ -35,6 +36,9 @@ Images
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#nav-images").addClass("selected");
+	$(".clickable-row").click(function() {
+		window.document.location = $(this).attr("href");
+	});
 });
 </script>
 {% endblock %}

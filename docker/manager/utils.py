@@ -56,6 +56,9 @@ def get_info(container_id=""):
     s = StringIO.StringIO(out)
     return json.load(s)
 
+def get_ip(conatiner_id=""):
+    info = get_info(container_id)
+
 '''
 Return the output of 'docker images' as a json
 
