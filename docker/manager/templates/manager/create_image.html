@@ -1,0 +1,39 @@
+{% extends "manager/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+New Instance
+{% endblock %}
+{% block page_title %}
+Create New Containers
+{% endblock %}
+{% block content %}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Options</h3>
+    </div>
+    <div class="panel-body">
+        <form action="{% url 'manager.views.create_image' %}" method="get" role="form">
+            {{ form.non_field_errors }}
+            <div class="row">
+                <div class="col-lg-4">
+                    {% render_field form.image_tag class="form-control btn-lg" placeholder="Image Name" %}
+                </div>
+                <div class="col-lg-4">
+                    {% render_field form.image_base class="form-control" style="font-size:18px;" %}
+                </div>
+                <div class="col-lg-4">
+                    <button type="submit" class="btn btn-success" style="width:100%;">Create Image</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#nav-create-image").addClass("selected");
+});
+</script>
+{% endblock %}
