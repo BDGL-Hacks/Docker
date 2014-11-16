@@ -134,3 +134,14 @@ def image_details(request):
 			return render(request, 'manager/image_details.html', { 'tag': request.GET['tag'], 'id': request.GET['id'], 'form':form })
 
 	return HttpResponseRedirect('/manager/images/')
+
+'''
+Delete image in the get request
+'''
+def delete_image(request):
+	if request.method == 'GET':
+		if 'id' in request.GET:
+			# Call function to delete this image id
+			pass
+
+	return HttpResponseRedirect('/manager/images/')
