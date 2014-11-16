@@ -35,7 +35,7 @@ Image: {{ tag }} ({{ id }})
 			<h3 class="panel-title">Remove</h3>
 		</div>
 		<div class="panel-body" style="text-align:center;">
-			<button type="button" class="btn btn-danger" style="width:75%">Delete Image</button>
+			<a class="btn btn-danger" style="width:75%;" href="{% url 'manager.views.delete_image' %}?id={{ id }}">Delete Image</a>
 		</div>
 	</div>
 </div>

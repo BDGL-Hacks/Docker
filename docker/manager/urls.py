@@ -10,4 +10,5 @@ urlpatterns = patterns('',
 	url(r'^images/$', views.display_images, name='images'),
 	url(r'^images/detail/$', views.image_details, name='container detail'),
 	url(r'^images/create/$', views.create_image, name='create image'),
+	url(r'^images/delete/$', views.delete_image, name='delete image'),
 )
