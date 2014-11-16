@@ -1,0 +1,17 @@
+
+
+#Deny root login
+PermitRootLogin no
+
+#Do not allow empty passwords
+PermitEmptyPasswords no
+
+# Forward my X Sessions
+X11Forwarding yes
+X11DisplayOffset 10
+
+# I hate Motd displays
+PrintMotd no
+
+# It's alliivee
+TCPKeepAlive yes
