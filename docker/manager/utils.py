@@ -111,18 +111,19 @@ Starts a docker container(s) with the provided image and options.
 Parameters: 
 container_name  =   (string) Name of the container
 image_name      =   (string) Name of the image to run
+quantity        =   (int) Number of containers to run
+is_interactive  =   (bool) Specifies whether or not you want terminal access
+is_background   =   (bool) Specifies whether the container should run in the background
 links           =   (string list) A list of containers to link to
 host_mounts     =   (string:string dictionary) A dictionary linking paths to volumes
                     on the host computer to their mount destination in the container
 external_mounts =   (string list) A list of containers to mount from
 custom_mounts   =   (string list) A list of paths for volumes to create and mount
-is_interactive  =   (bool) Specifies whether or not you want terminal access
-is_background   =   (bool) Specifies whether the container should run in the background
 
 Returns the response from the last initatied container
 '''
-def start_container(container_name, image_name, quantity, links=True, host_mounts=True,
-    external_mounts=True, custom_mounts=True, is_interactive, is_background):
+def start_container(container_name, image_name, quantity, is_interactive, is_background, 
+    links=True, host_mounts=True, external_mounts=True, custom_mounts=True):
     
     # Request a docker client
     client = docker.Client(base_url='unix://var/run/docker.sock', version='1.10', timeout=10)

@@ -47,8 +47,7 @@ def create_container(request):
 			is_background = data["is_background"]
 
 			# Create and start the new container
-			utils.start_container(container_name, image_name, quantity, links,
-				host_mounts, external_mounts, custom_mounts, is_interactive,
+			utils.start_container(container_name, image_name, quantity, is_interactive,
 				is_background)
 
 			# Create new containers with given parameters
