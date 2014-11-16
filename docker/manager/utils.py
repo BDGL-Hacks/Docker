@@ -1,6 +1,7 @@
 '''
 Contains scripts for manipulating docker data/commmands.
 '''
+import datetime
 import docker
 import json
 import re
@@ -34,6 +35,7 @@ def get_status():
             container[counter][headings[i]] = l[i]
 
         counter += 1
+    s.close()
 
     return container
 
@@ -84,8 +86,24 @@ def get_images():
                 container[counter][headings[i]] = l[i]
 
             counter += 1
+    s.close()
 
     return container
+
+'''
+Given time in "yyyy-mm-ddThh:mm:ss.sssssss" format (e.g. 2014-11-15T17:29:09.397073499Z) 
+return a datetime object
+'''
+def convert_time(sTime=""):
+    year = int(sTime[:4])
+    month = int(sTime[5:7])
+    day = int(sTime[8:10])
+    hour = int(sTime[11:13])
+    minute = int(sTime[14:16])
+    second = int(sTime[17:19])    
+
+    return datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute, second=second)
+
 
 '''
 Starts a docker container with the provided image and options.
@@ -93,6 +111,7 @@ Starts a docker container with the provided image and options.
 Parameters: 
 container_name  =   (string) Name of the container
 image_name      =   (string) Name of the image to run
+quantity        =   (int) The number of containers to create
 links           =   (string list) A list of containers to link to
 host_mounts     =   (string:string dictionary) A dictionary linking paths to volumes
                     on the host computer to their mount destination in the container
@@ -103,8 +122,8 @@ is_background   =   (bool) Specifies whether the container should run in the bac
 
 Returns the response from the client start method
 '''
-def start_container(container_name, image_name, links, host_mounts, external_mounts,
-    custom_mounts, is_interactive, is_background):
+def start_container(container_name, image_name, quantity, links, host_mounts,
+    external_mounts, custom_mounts, is_interactive, is_background):
     
     # Request a docker client
     client = docker.Client(base_url='unix://var/run/docker.sock', version='1.10', timeout=10)
@@ -124,18 +143,26 @@ def start_container(container_name, image_name, links, host_mounts, external_mou
         binds_dict[host_path] = {'bind' : dest_path, 'ro' : False}
 
     # Get DNS container IP address
-    dns_container_inspect_dict = client.inspect_container("dns")
+    dns_container_inspect_dict = client.inspect_container("base")
     dns_container_NetworkSettings_dict = dns_container_inspect_dict["NetworkSettings"]
     dns_container_ip = [dns_container_NetworkSettings_dict["IPAddress"]]
 
-    # Create a container and get its id
-    container = client.create_container(image=image_name, name=container_name, 
-        volumes=all_volumes, tty=is_interactive, stdin_open=is_interactive, 
-        detach=is_background)
-    containerID = container.get('Id')
+    # Create (quantity) number of containers
+    for i in range(quantity):
 
-    # Start the container and return the response
-    response = client.start(container=container.get('Id'), dns=dns_container_ip,
-        publish_all_ports=True, volumes_from=external_mounts, links=links_dict, 
-        binds=binds_dict)
+        # Ensure each container has a unique name
+        unique_name = container_name
+        if (i != 0):
+            unique_name += str(i+1)
+
+        # Create a container and get its id
+        container = client.create_container(image=image_name, name=unique_name, 
+            volumes=all_volumes, tty=is_interactive, stdin_open=is_interactive, 
+            detach=is_background)
+        containerID = container.get('Id')
+
+        # Start the container and return the response
+        response = client.start(container=container.get('Id'), dns=dns_container_ip,
+            publish_all_ports=True, volumes_from=external_mounts, links=links_dict, 
+            binds=binds_dict)
     return response

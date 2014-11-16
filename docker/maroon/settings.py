@@ -50,9 +50,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'docker.urls'
+ROOT_URLCONF = 'maroon.urls'
 
-WSGI_APPLICATION = 'docker.wsgi.application'
+WSGI_APPLICATION = 'maroon.wsgi.application'
 
 
 # Database
