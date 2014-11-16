@@ -10,12 +10,9 @@ from subprocess32 import Popen, PIPE
 
 '''
 Return the output of 'docker ps' as a json
-
-TODO: Update so command does not use sudo
 '''
 def get_status():
-    # command = "docker ps -a"
-    command = "sudo docker ps -a"
+    command = "docker ps -a"
 
     # Get output from command
     p = Popen(command.split(), stdout=PIPE)
@@ -41,12 +38,9 @@ def get_status():
 
 '''
 Return json containing container-specific docker information for given container id
-
-TODO: Update so command does not use sudo
 '''
 def get_info(container_id=""):
-    # command = "docker inspect " + container_id
-    command = "sudo docker inspect " + container_id 
+    command = "docker inspect " + container_id
 
     # Get output from command
     p = Popen(command.split(), stdout=PIPE)
@@ -61,12 +55,9 @@ def get_ip(conatiner_id=""):
 
 '''
 Return the output of 'docker images' as a json
-
-TODO: Update so command does not use sudo
 '''
 def get_images():
-    # command = "docker images"
-    command = "sudo docker images"
+    command = "docker images"
     
     # Get output from command
     p = Popen(command.split(), stdout=PIPE)

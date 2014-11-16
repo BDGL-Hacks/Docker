@@ -100,7 +100,7 @@ def container_details(request):
 			container_details['created_time'] = utils.convert_time(info['Created'])
 			container_details['id'] = info['Id'][:12]  		# Use first 12 digits
 			container_details['image'] = info['Image'][:12] # Use first 12 digits
-			container_details['name'] = info['Name'][1:]	# First char is always a '/'
+			container_details['name'] = info['Name'][1:]	# First char is always '/'
 			container_details['ip'] = info['NetworkSettings']['IPAddress']
 			container_details['is_running'] = info['State']['Running']
 			container_details['start_time'] = utils.convert_time(info['State']['StartedAt'])
