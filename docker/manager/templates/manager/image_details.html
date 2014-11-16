@@ -18,8 +18,8 @@ Image: {{ tag }} ({{ id }})
 				{{ form.non_field_errors }}
 				<div class="row" style="text-align:center;">
 					<div class="col-lg-8">
-						{% render_field form.container_name class+="form-control btn-lg" placeholder="Container Name" %}
-						{% render_field form.image_id style="display:none;" class+="hidden-field"%}
+						{% render_field form.container_name class="form-control btn-lg" placeholder="Container Name" %}
+						{% render_field form.image_id style="display:none;" class="hidden-field"%}
 					</div>
 					<div class="col-lg-4">
 						<button type="submit" class="btn btn-success" style="width:100%;">Launch Container</button>
