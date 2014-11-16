@@ -17,11 +17,13 @@ Create Container from Image
 			{{ form.non_field_errors }}
 			<div class="row">
 				<div class="col-lg-4">
-					
+					{% render_field form.container_name class="form-control btn-lg" placeholder="Container Name" %}
 				</div>
 				<div class="col-lg-4">
+					{% render_field form.image_id class="form-control" style="font-size:18px;" %}
 				</div>
 				<div class="col-lg-4">
+					<button type="submit" class="btn btn-success" style="width:100%;">Launch Container</button>
 				</div>
 			</div>
 		</form>

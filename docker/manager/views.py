@@ -65,7 +65,7 @@ def create_container(request):
 		form = CreateContainerForm(request.GET)
 		if form.is_valid():
 			# Call script to create new container from image
-			return HttpResponseRedirect('/manage/containers/')
+			return HttpResponseRedirect('/manager/containers/')
 	else:
 		form = CreateContainerForm()
 
