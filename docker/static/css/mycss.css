@@ -1,0 +1,12 @@
+td {
+	padding: 1em;
+	text-align: center;
+}
+
+table {
+	width: 100%;
+}
+
+.highlight {
+	background-color: #080808
+}

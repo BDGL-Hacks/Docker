@@ -1,12 +1,13 @@
 {% extends "manager/table_base.html" %}
+
 {% block title %}
-Status
+Images
 {% endblock %}
 {% block page_title %}
-View Containers
+Manage Images
 {% endblock %}
 {% block panel_title %}
-Containers
+Images
 {% endblock %}
 {% block table %}
 <table>
@@ -19,11 +20,11 @@ Containers
 		</tr>
 	</thead>
 	<tbody>
-		{% for container, info in containers.items %}
+		{% for image, info in images.items %}
 			<tr>
-				<td>{{ container }}</td>
+				<td>{{ image }}</td>
 				{% for key, value in info.items %}
-					<td>{{ value }}</td>	
+					<td>{{ value }}</td>
 				{% endfor %}
 			</tr>
 		{% endfor %}
@@ -33,7 +34,7 @@ Containers
 {% block extra_footer %}
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#nav-status").addClass("selected");
+	$("#nav-images").addClass("selected");
 });
 </script>
 {% endblock %}

@@ -14,8 +14,8 @@ Create New Containers
     </div>
     <div class="panel-body">
         <form action="{% url 'manager.views.create_image' %}" method="get" role="form">
-            {{ form.non_field_errors }}
-            <table class="form-group">
+            {# {{ form.non_field_errors }} #}
+<!--{#             <table class="form-group">
                 <tbody>
                     <tr>
                         <td><label for="id_name">Container Name: </label></td>
@@ -34,8 +34,18 @@ Create New Containers
                         <td><input type="submit" class="form-control" value="Launch Container" /></td>
                     </tr>
                 </tbody>
-            </table>
+            </table> #} -->
+
+            {{ form }}
+            <input type="submit" value="Launch Instance" />
         </form> 
     </div>
 </div>
+{% endblock %}
+{% block footer %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#nav-create").addClass("selected");
+});
+</script>
 {% endblock %}
