@@ -31,7 +31,7 @@ def create_container(request):
 			image_name = data["image_name"]
 			quantity = data["quantity"]
 			links = [data["links"]]
-			if (data["links"] == ""):
+			if (data["4links"] == ""):
 				links = []
 			host_mounts = {}
 			host_mounts[data["host_mount_local_path"]] = data["host_mount_dest_path"]
