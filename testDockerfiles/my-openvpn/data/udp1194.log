@@ -1,0 +1,20 @@
+Sun Nov 16 02:30:37 2014 OpenVPN 2.2.1 x86_64-linux-gnu [SSL] [LZO2] [EPOLL] [PKCS11] [eurephia] [MH] [PF_INET6] [IPv6 payload 20110424-2 (2.2RC2)] built on Jun 18 2013
+Sun Nov 16 02:30:37 2014 WARNING: using --duplicate-cn and --client-config-dir together is probably not what you want
+Sun Nov 16 02:30:37 2014 WARNING: --ifconfig-pool-persist will not work with --duplicate-cn
+Sun Nov 16 02:30:37 2014 NOTE: OpenVPN 2.1 requires '--script-security 2' or higher to call user-defined scripts or executables
+Sun Nov 16 02:30:37 2014 Diffie-Hellman initialized with 1024 bit key
+Sun Nov 16 02:30:37 2014 TLS-Auth MTU parms [ L:1542 D:138 EF:38 EB:0 ET:0 EL:0 ]
+Sun Nov 16 02:30:37 2014 Socket Buffers: R=[212992->131072] S=[212992->131072]
+Sun Nov 16 02:30:37 2014 ROUTE default_gateway=172.17.42.1
+Sun Nov 16 02:30:37 2014 TUN/TAP device tun1194 opened
+Sun Nov 16 02:30:37 2014 TUN/TAP TX queue length set to 100
+Sun Nov 16 02:30:37 2014 do_ifconfig, tt->ipv6=0, tt->did_ifconfig_ipv6_setup=0
+Sun Nov 16 02:30:37 2014 /sbin/ifconfig tun1194 10.8.0.1 pointopoint 10.8.0.2 mtu 1500
+Sun Nov 16 02:30:37 2014 /sbin/route add -net 10.8.0.0 netmask 255.255.255.0 gw 10.8.0.2
+Sun Nov 16 02:30:37 2014 Data Channel MTU parms [ L:1542 D:1450 EF:42 EB:135 ET:0 EL:0 AF:3/1 ]
+Sun Nov 16 02:30:37 2014 UDPv4 link local (bound): [undef]
+Sun Nov 16 02:30:37 2014 UDPv4 link remote: [undef]
+Sun Nov 16 02:30:37 2014 MULTI: multi_init called, r=256 v=256
+Sun Nov 16 02:30:37 2014 IFCONFIG POOL: base=10.8.0.4 size=62, ipv6=0
+Sun Nov 16 02:30:37 2014 IFCONFIG POOL LIST
+Sun Nov 16 02:30:37 2014 Initialization Sequence Completed

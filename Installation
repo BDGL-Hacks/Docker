@@ -1,0 +1,2 @@
+run this command for docker-dns (docker cannot be running)
+ docker -d --bip=172.17.42.1/16 --dns=172.17.42.1

@@ -1,0 +1,116 @@
+#!/bin/sh
+set -e
+
+OPENVPN_DATA_DIR="/data"
+
+init() {
+  [ -d /dev/net ] ||
+    mkdir -p /dev/net
+  [ -c /dev/net/tun ] ||
+    mknod /dev/net/tun c 10 200
+
+  # Create the data directory if it doesn't exist
+  [ -d /data ] ||
+    mkdir -p /data
+
+  # Create the client config directory if it doesn't exist
+  [ -d /data/ccd ] ||
+    mkdir -p /data/ccd
+}
+
+configure() {
+
+  # Create the SSL Certificates if they don't exist
+  [ -f "${OPENVPN_DATA_DIR}/dh1024.pem" ] ||
+    openssl dhparam -out "${OPENVPN_DATA_DIR}/dh1024.pem" 1024
+  [ -f "${OPENVPN_DATA_DIR}/server.key" ] ||
+    openssl genrsa -out "${OPENVPN_DATA_DIR}/server.key" 2048
+  chmod 600 ${OPENVPN_DATA_DIR}/server.key
+  [ -f "${OPENVPN_DATA_DIR}/csr.pem" ] ||
+    openssl req -new -key "${OPENVPN_DATA_DIR}/server.key" -out "${OPENVPN_DATA_DIR}/csr.pem" -subj /CN=OpenVPN/
+  [ -f "${OPENVPN_DATA_DIR}/cert.pem" ] ||
+    openssl x509 -req -in "${OPENVPN_DATA_DIR}/csr.pem" -out "${OPENVPN_DATA_DIR}/cert.pem" -signkey "${OPENVPN_DATA_DIR}/server.key" -days 36525
+
+
+  # Create the configuration if it doesn't exist
+  [ -f "${OPENVPN_DATA_DIR}/udp1194.conf" ] || cat >${OPENVPN_DATA_DIR}/udp1194.conf <<EOF
+server 10.8.0.0 255.255.255.0
+verb 3
+duplicate-cn
+key $OPENVPN_DATA_DIR/server.key
+ca $OPENVPN_DATA_DIR/cert.pem
+cert $OPENVPN_DATA_DIR/cert.pem
+dh $OPENVPN_DATA_DIR/dh1024.pem
+keepalive 10 120
+persist-key
+persist-tun
+comp-lzo
+push "redirect-gateway def1"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
+
+proto udp
+port 1194
+dev tun1194
+ifconfig-pool-persist ipp.txt
+client-config-dir $OPENVPN_DATA_DIR/ccd
+status $OPENVPN_DATA_DIR/openvpn-status-1194.log
+EOF
+
+  iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+}
+
+
+generate_client_configuration() {
+
+  [ -f "${OPENVPN_DATA_DIR}/client.ovpn" ] || {
+
+    OPENVPN_IP_ADDRESS=${MY_IP_ADDRESS:-$(curl -s http://myip.enix.org/REMOTE_ADDR)}
+
+    cat >${OPENVPN_DATA_DIR}/client.ovpn <<EOF
+client
+
+dev tun
+proto udp
+redirect-gateway def1
+
+nobind
+
+persist-key
+persist-tun
+
+inactive 3600
+comp-lzo
+
+<key>
+`cat ${OPENVPN_DATA_DIR}/server.key`
+</key>
+<cert>
+`cat ${OPENVPN_DATA_DIR}/cert.pem`
+</cert>
+<ca>
+`cat ${OPENVPN_DATA_DIR}/cert.pem`
+</ca>
+
+<connection>
+remote $OPENVPN_IP_ADDRESS 1194 udp
+</connection>
+EOF
+
+  }
+
+  echo "############## Client OVPN File ##############"
+  cat ${OPENVPN_DATA_DIR}/client.ovpn
+  echo "##############################################"
+
+}
+
+init
+
+configure
+
+generate_client_configuration
+
+touch $OPENVPN_DATA_DIR/udp1194.log
+while true ; do openvpn $OPENVPN_DATA_DIR/udp1194.conf ; done >> $OPENVPN_DATA_DIR/udp1194.log &
+tail -F $OPENVPN_DATA_DIR/*.log
