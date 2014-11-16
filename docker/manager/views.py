@@ -11,38 +11,20 @@ def home(request):
 	return render(request, 'manager/main_panel.html')
 
 '''
-Launch new instances
-
-TODO: Actually make the new container
+Launch new container(s) using CreateInstForm data
 '''
 def create_container(request):
+
+	# If we're receiving form data, validate and process it
 	if request.method == 'GET':
 		form = CreateInstForm(request.GET)
 		if form.is_valid():
- 
- 			''' 
- 				TODO: This is horrible code, and not even how its going to be processed
- 				when dynamic forms are introduced. When it is redone, feel free to uproot
- 				this entirely... sorry
- 			'''
+
 			# Get and process the data from the form into the required format
 			data = form.cleaned_data
 			container_name = data["container_name"]
 			image_name = data["image_name"]
 			quantity = data["quantity"]
-			links = [data["links"]]
-			if (data["4links"] == ""):
-				links = []
-			host_mounts = {}
-			host_mounts[data["host_mount_local_path"]] = data["host_mount_dest_path"]
-			if (data["host_mount_local_path"] == ""):
-				host_mounts = {}
-			external_mounts = [data["external_mounts"]]
-			if (data["external_mounts"] == ""): 
-				external_mounts = []
-			custom_mounts = [data["custom_mounts"]]
-			if (data["custom_mounts"] == ""): 
-				custom_mounts = []
 			is_interactive = data["is_interactive"]
 			is_background = data["is_background"]
 
@@ -50,11 +32,14 @@ def create_container(request):
 			utils.start_container(container_name, image_name, quantity, is_interactive,
 				is_background)
 
-			# Create new containers with given parameters
+			# Redirect back to the home page
 			return HttpResponseRedirect('/')
+
+	# Else create a blank form (this hshould never happen)
 	else:
 		form = CreateInstForm()
 
+	# Render the create_instance html template and send it to the form
 	return render(request, 'manager/create_instance.html', { 'form': form })
 
 '''
@@ -103,8 +88,6 @@ def container_details(request):
 			return render(request, 'manager/details.html', { 'details': container_details })
 
 	return HttpResponseRedirect('/manager/status/')
-
-
 
 
 '''

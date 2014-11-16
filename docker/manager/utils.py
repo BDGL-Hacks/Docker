@@ -123,7 +123,7 @@ custom_mounts   =   (string list) A list of paths for volumes to create and moun
 Returns the response from the last initatied container
 '''
 def start_container(container_name, image_name, quantity, is_interactive, is_background, 
-    links=True, host_mounts=True, external_mounts=True, custom_mounts=True):
+    links=[], host_mounts={}, external_mounts=[], custom_mounts=[]):
     
     # Request a docker client
     client = docker.Client(base_url='unix://var/run/docker.sock', version='1.10', timeout=10)
@@ -297,7 +297,7 @@ def branch_image(image_name, branch_name):
 
     # Create a container for the image (so we can use docker commit) and get its ID
     # NOTE: The random number in the container is to reduce the likelihood of accidentally
-    # clobbering an existing container. Chosen by fair dice roll - guaranteed randomness
+    # clobbering an existing container. Chosen by fair dice roll - guaranteed to be random
     container = client.create_container(image=image_name, name='temp_container_7432983025')
     containerID = container.get('Id')
 
