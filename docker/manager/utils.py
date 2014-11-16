@@ -1,6 +1,7 @@
 '''
 Contains scripts for manipulating docker data/commmands.
 '''
+import datetime
 import docker
 import json
 import re
@@ -34,6 +35,7 @@ def get_status():
             container[counter][headings[i]] = l[i]
 
         counter += 1
+    s.close()
 
     return container
 
@@ -84,8 +86,24 @@ def get_images():
                 container[counter][headings[i]] = l[i]
 
             counter += 1
+    s.close()
 
     return container
+
+'''
+Given time in "yyyy-mm-ddThh:mm:ss.sssssss" format (e.g. 2014-11-15T17:29:09.397073499Z) 
+return a datetime object
+'''
+def convert_time(sTime=""):
+    year = int(sTime[:4])
+    month = int(sTime[5:7])
+    day = int(sTime[8:10])
+    hour = int(sTime[11:13])
+    minute = int(sTime[14:16])
+    second = int(sTime[17:19])    
+
+    return datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute, second=second)
+
 
 '''
 Starts a docker container with the provided image and options.
